@@ -1,28 +1,36 @@
-import { useState } from 'react'
+import { Provider, useSelector } from 'react-redux'
+import store from './store'
+import Header from './components/Header'
+import LoginForm from './components/LoginForm'
+import UserInfo from './components/UserInfo'
+import Footer from './components/Footer'
 
-function App() {
-  const [count, setCount] = useState(0)
+function Content() {
+  const isLoggedIn = useSelector((s) => s.auth.isLoggedIn)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
+    <div className="min-h-screen bg-gradient-to-br from-sky-50 via-indigo-50 to-purple-50">
+      <Header />
+
+      <main className="max-w-4xl mx-auto px-4 pt-10">
+        <div className="grid grid-cols-1 gap-6">
+          {!isLoggedIn ? (
+            <LoginForm />
+          ) : (
+            <UserInfo />
+          )}
         </div>
-      </div>
+      </main>
+
+      <Footer />
     </div>
   )
 }
 
-export default App
+export default function App() {
+  return (
+    <Provider store={store}>
+      <Content />
+    </Provider>
+  )
+}
